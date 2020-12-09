@@ -1,0 +1,52 @@
+﻿@page "/todo"
+<h1>Todo</h1>
+
+<div class="col-md-4 mb-3">
+    <input class="form-control" placeholder="Todo item" @bind="todo"/>
+    <button class="btn btn-primary mt-1" @onclick="Add">Add</button>
+</div>
+
+<ul class="list-group">
+    @foreach (var todo in todos)
+    {
+        <li class="list-group-item">
+            @todo.Title
+            <div class="float-right custom-control custom-checkbox">
+                <input type="checkbox" class="form-check-input" id="doneCheckBox" @bind="todo.IsDone"/>
+                <label class="form-check-label" for="doneCheckBox">Done</label>
+            </div>
+        </li>
+    }
+</ul>
+
+
+@code {
+
+    private string todo;
+
+    private void Add()
+    {
+        if (!string.IsNullOrWhiteSpace(todo))
+        {
+            todos.Add(new TodoItemModel{Title = todo});
+            //clear todoInput
+            todo = string.Empty;
+        }
+    }
+
+
+    private IList<TodoItemModel> todos = new List<TodoItemModel>
+    {
+        new TodoItemModel()
+        {
+            IsDone = false,
+            Title = "Nauczyć się Blazor",
+        },
+        new TodoItemModel()
+        {
+            IsDone = true,
+            Title = "Napisać przelicznik $ na PLN",
+        }
+    };
+
+}

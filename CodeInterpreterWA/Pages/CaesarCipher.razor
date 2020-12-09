@@ -1,0 +1,72 @@
+﻿@page "/caesarCipher"
+@using System.Text
+<h1>Caesar Cipher</h1>
+
+<div class="row" style="height: 600px;">
+    <div class="col-6 h-100">
+        <textarea class="form-control" placeholder="Enter text..." @bind="EncryptText"></textarea>
+        <br />
+        <label>Number of shift letters</label>
+        <br />
+        <input type="number" class="form-control" placeholder="0" @bind="ShiftValue" />
+        <br />
+        <br />
+
+        <button class="btn btn-success" @onclick="Encrypt">
+            <span class="oi oi-key" aria-hidden="true"></span> Decrypt
+        </button><br/>
+
+        @if (@_outputText != null)
+        {
+            <div class="row blockquote mt-5">
+                <span>Result: @_outputText</span>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    string _inputText = string.Empty;
+    private StringBuilder _outputText = new StringBuilder();
+    int? _shiftValue = 0;
+
+    public string EncryptText
+    {
+        get => _inputText;
+        set
+        {
+            _inputText = value;
+            Encrypt();
+        }
+    }
+
+    public int? ShiftValue
+    {
+        get => _shiftValue;
+        set
+        {
+            _shiftValue = value;
+            _outputText.Clear();
+            Encrypt();
+        }
+    }
+
+    private void Encrypt()
+    {
+        _outputText.Clear();
+        foreach (var sign in _inputText)
+        {
+            if (char.IsLetter(sign))
+            {
+                var ch = char.IsUpper(sign) ? 'A' : 'a';
+                _outputText.Append((char)((((sign + _shiftValue) - ch) % 26) + ch));
+            }
+            else
+            {
+                _outputText.Append(sign);
+            }
+        }
+    }
+}

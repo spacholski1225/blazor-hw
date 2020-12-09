@@ -1,0 +1,42 @@
+﻿<div class="form-group">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Dollars</label>
+            <input type="number" class="form-control" placeholder="Dollars...." @bind="Dollars" />
+            <label>Default exchange rate</label>
+            <input type="number" class="form-control" placeholder="Exchange rate...." @bind="NewRate" />
+        </div>
+        <button class="btn btn-primary" @onclick="ConvertCurrency">
+            <span class="oi oi-dollar" aria-hidden="true"></span> Convert
+        </button>
+    </div>
+    @if (_plns != null)
+    {
+        <div class="row blockquote mt-5">
+            <span> @Dollars USD in exchange rate @_dollarsRate is equivalent @_plns PLN! </span>
+
+        </div>
+    }
+</div>
+
+@code {
+
+    double? _dollarsRate = 3.96;
+    double? _plns = null;
+
+    public double? Dollars { get; set; }
+    public double? NewRate
+    {
+        get => _dollarsRate;
+        set
+        {
+            _dollarsRate = value;
+            ConvertCurrency();
+        }
+    }
+
+    private void ConvertCurrency()
+    {
+        _plns = Dollars * NewRate;
+    }
+}
